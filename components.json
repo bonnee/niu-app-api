@@ -1,0 +1,539 @@
+{
+	"schemas": {
+		"Token": {
+			"description": "The user-unique token",
+			"type": "string",
+			"example": "tokenExperienceMode"
+		},
+		"User": {
+			"type": "object",
+			"properties": {
+				"nickname": {
+					"type": "string"
+				},
+				"realname": {
+					"type": "string"
+				},
+				"headimg": {
+					"type": "string",
+					"format": "url"
+				},
+				"mobile": {
+					"type": "string"
+				},
+				"uid": {
+					"type": "string",
+					"format": "uuid"
+				},
+				"auto-id": {
+					"type": "string"
+				},
+				"countryCode": {
+					"description": "The standard country code",
+					"type": "string"
+				},
+				"sex": {
+					"type": "string"
+				},
+				"birthdate": {
+					"type": "string"
+				},
+				"emails": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"address": {
+								"type": "string",
+								"format": "email"
+							},
+							"verified": {
+								"type": "boolean"
+							}
+						}
+					}
+				}
+			}
+		},
+		"MopedInfo": {
+			"type": "object",
+			"properties": {
+				"isCharging": {
+					"type": "integer"
+				},
+				"lockStatus": {
+					"type": "integer"
+				},
+				"isAccOn": {
+					"type": "integer"
+				},
+				"isFortificationOn": {
+					"type": "integer"
+				},
+				"isConnected": {
+					"type": "boolean"
+				},
+				"position": {
+					"type": "object",
+					"properties": {
+						"lat": {
+							"type": "number",
+							"format": "float"
+						},
+						"lon": {
+							"type": "number",
+							"format": "float"
+						}
+					}
+				},
+				"hdop": {
+					"type": "integer"
+				},
+				"time": {
+					"type": "integer",
+					"format": "time"
+				},
+				"batteries": {
+					"type": "object",
+					"properties": {
+						"compartmentA": {
+							"$ref": "#/components/schemas/Battery"
+						},
+						"compartmentB": {
+							"$ref": "#/components/schemas/Battery"
+						}
+					}
+				},
+				"leftTime": {
+					"type": "string"
+				},
+				"estimatedMileage": {
+					"type": "integer"
+				},
+				"gpsTimestamp": {
+					"type": "integer",
+					"format": "time"
+				},
+				"infoTimestamp": {
+					"type": "integer",
+					"format": "time"
+				},
+				"nowSpeed": {
+					"type": "number"
+				},
+				"batteryDetail": {
+					"type": "boolean"
+				},
+				"centreCtrlBattery": {
+					"type": "integer"
+				},
+				"ss_protocol_ver": {
+					"type": "integer"
+				},
+				"ss_online_sta": {
+					"type": "integer"
+				},
+				"gps": {
+					"type": "integer"
+				},
+				"gsm": {
+					"type": "integer"
+				},
+				"lastTrack": {
+					"type": "object",
+					"properties": {
+						"ridingTime": {
+							"type": "integer"
+						},
+						"distance": {
+							"type": "integer"
+						},
+						"time": {
+							"type": "integer",
+							"format": "time"
+						}
+					}
+				}
+			}
+		},
+		"MopedDesc": {
+			"type": "object",
+			"properties": {
+				"sn": {
+					"description": "Serial Number",
+					"type": "string",
+					"example": "M130000W0000000"
+				},
+				"specialEdition": {
+					"type": "string"
+				},
+				"vehicleColorImg": {
+					"type": "string",
+					"format": "uri"
+				},
+				"vehicleLogoImg": {
+					"type": "string",
+					"format": "uri"
+				},
+				"vehicleTypeId": {
+					"type": "string"
+				},
+				"indexHeaderBg": {
+					"type": "string",
+					"format": "uri"
+				},
+				"scootorImg": {
+					"type": "string",
+					"format": "uri"
+				},
+				"batteryInfoBg": {
+					"type": "string",
+					"format": "uri"
+				},
+				"myPageHeaderBg": {
+					"type": "string"
+				},
+				"listScooterImg": {
+					"type": "string",
+					"format": "uri"
+				},
+				"name": {
+					"type": "string"
+				},
+				"frameNo": {
+					"type": "string"
+				},
+				"engineNo": {
+					"type": "string"
+				},
+				"isSelected": {
+					"type": "boolean"
+				},
+				"isMaster": {
+					"type": "boolean"
+				},
+				"bindNum": {
+					"type": "integer"
+				},
+				"renovated": {
+					"type": "boolean"
+				},
+				"bindDate": {
+					"type": "integer",
+					"format": "time"
+				},
+				"isShow": {
+					"type": "boolean"
+				},
+				"isLite": {
+					"type": "boolean"
+				},
+				"gpsTimestamp": {
+					"type": "integer",
+					"format": "time"
+				},
+				"infoTimestamp": {
+					"type": "integer",
+					"format": "time"
+				},
+				"productType": {
+					"type": "string"
+				},
+				"process": {
+					"type": "string"
+				},
+				"brand": {
+					"type": "string"
+				},
+				"isDoubleBattery": {
+					"type": "boolean"
+				},
+				"features": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"featureName": {
+								"type": "string"
+							},
+							"isSupport": {
+								"type": "boolean"
+							},
+							"switch_status": {
+								"type": "string"
+							}
+						}
+					}
+				},
+				"type": {
+					"type": "string"
+				}
+			}
+		},
+		"MopedTrips": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "string"
+				},
+				"trackId": {
+					"type": "string"
+				},
+				"startTime": {
+					"type": "integer",
+					"format": "time"
+				},
+				"endTime": {
+					"type": "integer",
+					"format": "time"
+				},
+				"distance": {
+					"type": "integer"
+				},
+				"avespeed": {
+					"type": "number",
+					"format": "float"
+				},
+				"ridingtime": {
+					"type": "integer"
+				},
+				"type": {
+					"type": "string"
+				},
+				"date": {
+					"type": "string"
+				},
+				"startPoint": {
+					"type": "object",
+					"properties": {
+						"lng": {
+							"type": "string"
+						},
+						"lat": {
+							"type": "string"
+						},
+						"speed": {
+							"type": "string"
+						},
+						"battery": {
+							"type": "string"
+						},
+						"mileage": {
+							"type": "string"
+						},
+						"date": {
+							"type": "string"
+						}
+					}
+				},
+				"lastPoint": {
+					"$ref": "#/components/schemas/MopedTrips/properties/startPoint"
+				}
+			}
+		},
+		"CyclingStats": {
+			"type": "object",
+			"properties": {
+				"ridingTime": {
+					"type": "string"
+				},
+				"everydayMileage": {
+					"type": "string"
+				},
+				"maxSpeed": {
+					"type": "string"
+				},
+				"AvgSpeed": {
+					"type": "string"
+				},
+				"date": {
+					"type": "string"
+				}
+			}
+		},
+		"Health": {
+			"type": "object",
+			"properties": {
+				"faults": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				"healthRecords": {
+					"type": "object",
+					"properties": {
+						"result": {
+							"type": "string"
+						},
+						"chargeCount": {
+							"type": "string"
+						},
+						"color": {
+							"type": "string",
+							"format": "hex"
+						},
+						"time": {
+							"type": "integer",
+							"format": "time"
+						},
+						"name": {
+							"type": "string"
+						}
+					}
+				}
+			}
+		},
+		"Battery": {
+			"type": "object",
+			"properties": {
+				"bmsId": {
+					"type": "string"
+				},
+				"isConnected": {
+					"type": "boolean"
+				},
+				"batteryCharging": {
+					"description": "Battery SoC",
+					"type": "integer",
+					"format": "percent"
+				},
+				"gradeBattery": {
+					"type": "string",
+					"format": "float"
+				}
+			}
+		},
+		"CompartmentAHealth": {
+			"type": "object",
+			"properties": {
+				"compartmentA": {
+					"allOf": [{
+							"$ref": "#/components/schemas/Battery"
+						},
+						{
+							"$ref": "#/components/schemas/Health"
+						}
+					]
+				}
+			}
+		},
+		"CompartmentBHealth": {
+			"type": "object",
+			"properties": {
+				"compartmentB": {
+					"allOf": [{
+							"$ref": "#/components/schemas/Battery"
+						},
+						{
+							"$ref": "#/components/schemas/Health"
+						}
+					]
+				}
+			}
+		},
+		"SingleBatteryHealth": {
+			"allOf": [{
+				"$ref": "#/components/schemas/CompartmentAHealth"
+			}, {
+				"type": "object",
+				"properties": {
+					"isDoubleBattery": {
+						"type": "boolean"
+					}
+				}
+			}]
+		},
+		"DoubleBatteryHealth": {
+			"allOf": [{
+				"$ref": "#/components/schemas/CompartmentAHealth"
+			}, {
+				"$ref": "#/components/schemas/CompartmentBHealth"
+			}, {
+				"type": "object",
+				"properties": {
+					"isDoubleBattery": {
+						"type": "boolean"
+					}
+				}
+			}]
+		},
+		"BatteryHealth": {
+			"type": "object",
+			"properties": {
+				"batteries": {
+					"oneOf": [{
+							"$ref": "#/components/schemas/SingleBatteryHealth"
+						},
+						{
+							"$ref": "#/components/schemas/DoubleBatteryHealth"
+						}
+					],
+					"discriminator": {
+						"propertyName": "isDoubleBattery",
+						"mapping": {
+							"true": "#/components/schemas/DoubleBatteryHealth",
+							"false": "#/components/schemas/SingleBatteryHealth"
+						}
+					}
+				}
+			}
+		},
+		"Notification": {
+			"type": "object",
+			"properties": {
+				"msgNo": {
+					"type": "string"
+				},
+				"msgId": {
+					"type": "string"
+				},
+				"sn": {
+					"$ref": "#/components/schemas/MopedDesc/properties/sn"
+				},
+				"change_status": {
+					"type": "string"
+				},
+				"mainCate": {
+					"type": "integer"
+				},
+				"subCate": {
+					"type": "integer"
+				},
+				"motorName": {
+					"type": "string"
+				},
+				"motorType": {
+					"type": "string"
+				},
+				"weight": {
+					"type": "integer"
+				},
+				"title": {
+					"type": "string"
+				},
+				"image": {
+					"type": "string",
+					"format": "uri"
+				},
+				"url": {
+					"type": "string",
+					"format": "uri"
+				},
+				"niuYouNo": {
+					"type": "string"
+				},
+				"feedbackId": {
+					"type": "string"
+				},
+				"repairsNo": {
+					"type": "string"
+				},
+				"time": {
+					"type": "integer",
+					"format": "time"
+				}
+			}
+		}
+	}
+}

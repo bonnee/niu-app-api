@@ -1,0 +1,409 @@
+{
+	"openapi": "3.0.2",
+	"info": {
+		"title": "niu-app-api",
+		"description": "Reverse engineering of the NIU E-Scooter app API",
+		"version": "3.7.2",
+		"termsOfService": "https://download.niucache.com/app/pages/privacy/lisenceScale_en_20181016.html",
+		"contact": {
+			"name": "Matteo Bonora",
+			"email": "bonora.matteo@gmail.com"
+		}
+	},
+	"servers": [{
+		"url": "https://app-api-fk.niu.com/",
+		"description": "API Server"
+	}],
+	"paths": {
+		"/login": {
+			"post": {
+				"summary": "Logs a user in",
+				"servers": [{
+					"url": "https://account-fk.niu.com/appv2/",
+					"description": "Authentication Server"
+				}],
+				"requestBody": {
+					"description": "Authentication parameters",
+					"required": true,
+					"content": {
+						"application/x-www-form-urlencoded": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"password": {
+										"type": "string"
+									},
+									"countryCode": {
+										"type": "integer"
+									},
+									"account": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "The user profile",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "object",
+											"properties": {
+												"token": {
+													"$ref": "#/components/schemas/Token"
+												},
+												"user": {
+													"$ref": "#/components/schemas/User"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/motoinfo/list": {
+			"post": {
+				"summary": "Returns the moped associated to the user",
+				"parameters": [{
+					"name": "token",
+					"in": "header",
+					"schema": {
+						"$ref": "#/components/schemas/Token"
+					}
+				}],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/x-www-form-urlencoded": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"masterOnly": {
+										"type": "integer",
+										"example": 0
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "List of mopeds",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "array",
+											"items": {
+												"$ref": "#/components/schemas/MopedDesc"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v3/motor_data/index_info": {
+			"get": {
+				"summary": "Returns the moped-specific info",
+				"parameters": [{
+						"name": "token",
+						"in": "header",
+						"schema": {
+							"$ref": "#/components/schemas/Token"
+						}
+					},
+					{
+						"name": "sn",
+						"description": "Serial number",
+						"in": "query",
+						"schema": {
+							"$ref": "#/components/schemas/MopedDesc/properties/sn"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Moped's info",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"description": "Dual battery mopeds",
+									"properties": {
+										"data": {
+											"$ref": "#/components/schemas/MopedInfo"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v3/motor_data/track": {
+			"post": {
+				"summary": "Returns the trips",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/x-www-form-urlencoded": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"pagesize": {
+										"type": "integer"
+									},
+									"index": {
+										"type": "integer"
+									},
+									"sn": {
+										"$ref": "#/components/schemas/MopedDesc/properties/sn"
+									},
+									"token": {
+										"$ref": "#/components/schemas/Token"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "List of trips",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "array",
+											"items": {
+												"$ref": "#/components/schemas/MopedTrips"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v3/motor_data/battery_info/health": {
+			"get": {
+				"summary": "Returns battery health info",
+				"parameters": [{
+						"name": "token",
+						"in": "header",
+						"schema": {
+							"$ref": "#/components/schemas/Token"
+						}
+					},
+					{
+						"name": "sn",
+						"description": "Serial number",
+						"in": "query",
+						"schema": {
+							"$ref": "#/components/schemas/MopedDesc/properties/sn"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Battery health",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"description": "Battery health",
+									"properties": {
+										"data": {
+											"$ref": "#/components/schemas/BatteryHealth"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v3/motor_data/cycling_statistics": {
+			"get": {
+				"summary": "Returns the day-by-day driving statistics",
+				"parameters": [{
+						"name": "sortby",
+						"in": "query",
+						"schema": {
+							"type": "integer"
+						}
+					},
+					{
+						"name": "token",
+						"in": "header",
+						"schema": {
+							"$ref": "#/components/schemas/Token"
+						}
+					},
+					{
+						"name": "sn",
+						"description": "Serial number",
+						"in": "query",
+						"schema": {
+							"$ref": "#/components/schemas/MopedDesc/properties/sn"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "List of driving statistics",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "object",
+											"properties": {
+												"items": {
+													"type": "array",
+													"items": {
+														"$ref": "#/components/schemas/CyclingStats"
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/motoinfo/overallTally": {
+			"post": {
+				"summary": "Returns the odometer value and days of usage",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/x-www-form-urlencoded": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"sn": {
+										"$ref": "#/components/schemas/MopedDesc/properties/sn"
+									},
+									"token": {
+										"$ref": "#/components/schemas/Token"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Odometer and time value",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "object",
+											"properties": {
+												"bindDaysCount": {
+													"type": "integer"
+												},
+												"totalMileage": {
+													"type": "integer"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/v3/msg/card_lists": {
+			"post": {
+				"summary": "Returns the pending notifications",
+				"parameters": [{
+					"name": "token",
+					"in": "header",
+					"schema": {
+						"$ref": "#/components/schemas/Token"
+					}
+				}],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/x-www-form-urlencoded": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"sn": {
+										"$ref": "#/components/schemas/MopedDesc/properties/sn"
+									},
+									"token": {
+										"$ref": "#/components/schemas/Token"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "List of pending notifications",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "object",
+											"properties": {
+												"items": {
+													"type": "array",
+													"items": {
+														"$ref": "#/components/schemas/Notification"
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"$ref": "components.json"
+	}
+}
